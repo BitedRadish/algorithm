@@ -1,5 +1,4 @@
 function solution(input) {
-    // git 변동 내용확인
     const exp = input.split("");
     console.log(exp);
 
