@@ -1,51 +1,40 @@
 function solution(input) {
     const exp = input.split("");
-    console.log(exp);
 
-    const leftArr = [];
-    const rightArr = [];
-
+    const left = [];
+    const pairs = [];
     for (let i = 0; i < exp.length; i++) {
         if (exp[i] === "(") {
-            leftArr.push(i);
+            left.push(i);
         } else if (exp[i] === ")") {
-            rightArr.push(i);
+            pairs.push([left.pop(), i]);
         }
     }
-    const pairs = [];
-    for (let i = 0; i < leftArr.length; i++) {
-        const pair = [leftArr[i], rightArr[rightArr.length - 1 - i]];
-        pairs.push(pair);
+
+    const tempResult = new Set();
+
+    for (let i = 1; i <= 2 ** pairs.length - 1; i++) {
+        const expCopy = exp.slice();
+        const t = i.toString(2).padStart(pairs.length, "0").split("");
+        for (let j = 0; j < t.length; j++) {
+            if (t[j] === "1") {
+                const [l, r] = pairs[j];
+                expCopy.splice(l, 1, "");
+                expCopy.splice(r, 1, "");
+            }
+        }
+        tempResult.add(expCopy.join(""));
     }
-
-    const result = [];
-
-    const removeBracket = (start, idx) => {
-        removeBracket(start - 1, start);
-    };
-    removeBracket(pairs.length - 1, pairs.length - 1);
+    const result = [...tempResult].sort().join("\n");
+    console.log(result);
 }
 
 const rl = require("readline").createInterface({
     input: process.stdin,
     output: process.stdout,
 });
-const months = ["Jan", "March", "April", "June"];
-months.splice(1, 1);
-console.log(months);
+
 rl.on("line", (line) => {
     solution(line);
     process.exit();
 });
-// const makeCase = (start,idx) => {
-//     if (idx < 0) return;
-//     let expCopy = exp.slice();
-//     const [lIdx, rIdx] = pairs[idx];
-//     expCopy.splice(lIdx, 1);
-//     expCopy.splice(rIdx, 1);
-//     result.push(expCopy);
-
-//     makeCase(idx - 1);
-// };
-//let visited = Array(pairs.length).fill(0);
-// console.log(visited);

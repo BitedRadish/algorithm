@@ -23,6 +23,7 @@ function solution(input) {
             }
         }
     }
+
     const bShark = {
         r: sr,
         c: sc,
@@ -84,7 +85,7 @@ function solution(input) {
         board[bShark.r][bShark.c] = 0;
         [bShark.r, bShark.c] = [eatR, eatC];
         sec += eatD;
-        board[bShark.r][bShark.c] = 9;
+        // board[bShark.r][bShark.c] = 9;
         bShark.exp += 1;
 
         if (bShark.exp === bShark.size) {
