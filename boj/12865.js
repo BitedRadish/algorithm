@@ -16,7 +16,7 @@ function solution(input) {
             }
         }
     }
-    // console.log(dp.map((el) => el.join(" ")).join("\n"));
+    console.log(dp.map((el) => el.join(" ")).join("\n"));
     console.log(dp[n][weight]);
 }
 
