@@ -5,16 +5,11 @@ function solution(input) {
     const neg = [];
 
     for (let i = 0; i < n; i++) {
-        if (+input[1 + i] > 0) {
-            pos.push(+input[i + 1]);
-        } else {
-            neg.push(+input[i + 1]);
-        }
+        +input[1 + i] > 0 ? pos.push(+input[i + 1]) : neg.push(+input[i + 1]);
     }
     pos.sort((a, b) => b - a);
     neg.sort((a, b) => a - b);
-    // const pos = numArr.filter((el) => el > 0).sort((a, b) => b - a);
-    // const neg = numArr.filter((el) => el <= 0).sort((a, b) => a - b);
+
     const newSort = pos.concat(neg);
 
     let res = 0;
