@@ -10,6 +10,8 @@ const init = (N) => {
 };
 
 const getParent = (init, a) => {
+    // 그냥 자기 자신이라면 , 자기 자신 반환
+    // 자기 자신이라는 말은 최상단 부모로 올라왔다는 뜻과 같음
     if (init[a] == a) return a;
     return (init[a] = getParent(init, parent[a]));
 };
@@ -23,3 +25,5 @@ const unionParent = (init, a, b) => {
         init[a] = b;
     }
 };
+
+console.log(init(10));
