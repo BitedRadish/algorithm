@@ -1,51 +1,46 @@
 function solution(input) {
-    const n = +input[0];
-    const m = +input[1];
+    const n = Number(input[0]);
+    const m = Number(input[1]);
 
-    const arr = input.slice(2, 2 + n);
+    const connected = input
+        .slice(2, 2 + n)
+        .map((e) => e.split(" ").map(Number));
 
-    const linkArr = [];
-    // 연결된 간선 저장
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            if (arr[i][j] === 1) {
-                linkArr.push([i + 1, j + 1]);
+    const plan = input
+        .slice(n + 2)[0]
+        .split(" ")
+        .map(Number);
+
+    // 연결 표시 배열
+    const arr = Array.from({ length: n }, (_, idx) => idx);
+
+    for (let from = 0; from < connected.length; from++) {
+        for (let to = 0; to < connected[from].length; to++) {
+            if (connected[from][to]) {
+                union(from, to, arr);
             }
         }
     }
-    const parentArr = Array.from({ length: n + 1 }, (_, idx) => idx);
-    const targets = input[2 + n];
 
-    // 부모 합치기
-    for (let i = 0; i < linkArr.length; i++) {
-        const [a, b] = linkArr[i];
-        unionFind(parentArr, a, b);
-    }
-
-    for (let i = 0; i < m - 1; i++) {
-        if (!findParent(parentArr, targets[i], targets[i + 1])) {
-            console.log("NO");
-            return;
-        }
+    for (let i = 0; i < plan.length - 1; i++) {
+        const p1 = plan[i];
+        const p2 = plan[i + 1];
+        if (arr[p1 - 1] !== arr[p2 - 1]) return console.log("NO");
     }
     console.log("YES");
+    // plan에 대한 가능성 여부를 어떻게 판단하면 좋을까
 }
 
-function getParent(arr, el) {
-    if (arr[el] === el) return el;
-    return getParent(arr, arr[el]);
-}
-function unionFind(arr, a, b) {
-    a = getParent(arr, a);
-    b = getParent(arr, b);
-
-    a < b ? (arr[b] = a) : (arr[a] = b);
+function findParent(x, arr) {
+    if (arr[x] === x) return x;
+    return (arr[x] = findParent(arr[x], arr));
 }
 
-function findParent(arr, a, b) {
-    a = getParent(arr, a);
-    b = getParent(arr, b);
-    return a === b;
+function union(x, y, arr) {
+    x = findParent(x, arr);
+    y = findParent(y, arr);
+
+    return x < y ? (arr[y] = x) : (arr[x] = y);
 }
 
 const rl = require("readline").createInterface({
@@ -56,7 +51,7 @@ const rl = require("readline").createInterface({
 const input = [];
 
 rl.on("line", (line) => {
-    input.push(line.split(" ").map(Number));
+    input.push(line);
 }).on("close", () => {
     solution(input);
     process.exit();
